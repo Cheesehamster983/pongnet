@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pong Game</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    canvas { background: #111; border: 2px solid #fff; }
+  </style>
+</head>
+<body>
+  <canvas id="pong" width="800" height="500"></canvas>
+
+  <script>
+    const canvas = document.getElementById("pong");
+    const ctx = canvas.getContext("2d");
+
+    const paddleWidth = 10, paddleHeight = 100;
+    const player = { x: 10, y: canvas.height / 2 - paddleHeight / 2, width: paddleWidth, height: paddleHeight, dy: 0 };
+    const ai = { x: canvas.width - 20, y: canvas.height / 2 - paddleHeight / 2, width: paddleWidth, height: paddleHeight, dy: 4 };
+    const ball = { x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx: 5, dy: 5 };
+
+    function drawRect(x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, w, h);
+    }
+
+    function drawCircle(x, y, r, color) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function drawNet() {
+      for (let i = 0; i <= canvas.height; i += 15) {
+        drawRect(canvas.width / 2 - 1, i, 2, 10, "#fff");
+      }
+    }
+
+    function draw() {
+      drawRect(0, 0, canvas.width, canvas.height, "#111");
+      drawNet();
+      drawRect(player.x, player.y, player.width, player.height, "#fff");
+      drawRect(ai.x, ai.y, ai.width, ai.height, "#fff");
+      drawCircle(ball.x, ball.y, ball.radius, "#fff");
+    }
+
+    function update() {
+      player.y += player.dy;
+
+      if (ball.y < ai.y + ai.height / 2) ai.y -= ai.dy;
+      else if (ball.y > ai.y + ai.height / 2) ai.y += ai.dy;
+
+      ball.x += ball.dx;
+      ball.y += ball.dy;
+
+      if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
+        ball.dy *= -1;
+      }
+
+      let paddle = (ball.x < canvas.width / 2) ? player : ai;
+      if (ball.x - ball.radius < paddle.x + paddle.width &&
+          ball.x + ball.radius > paddle.x &&
+          ball.y + ball.radius > paddle.y &&
+          ball.y - ball.radius < paddle.y + paddle.height) {
+        ball.dx *= -1;
+      }
+
+      if (ball.x < 0 || ball.x > canvas.width) {
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height / 2;
+        ball.dx *= -1;
+        ball.dy *= -1;
+      }
+    }
+
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowUp") player.dy = -6;
+      else if (e.key === "ArrowDown") player.dy = 6;
+    });
+    document.addEventListener("keyup", () => player.dy = 0);
+
+    loop();
+  </script>
+</body>
+</html>
