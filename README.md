@@ -3,4 +3,5 @@ and if you want to play 1 of the 2 pong games here is a link: https://cheesehams
 The controlls for this are the up and down arrow.
 
 If your intrestet in the second game of pong its recomended for devices like telefons and tablets.
+https://cheesehamster983.github.io/pongnet/pong.html
 Controlls are the up butten to let the square go op and the down button to let it go down.
