@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pong Mobile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+      touch-action: none;
+    }
+    canvas {
+      display: block;
+      background: #111;
+      margin: auto;
+    }
+    .controls {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+    }
+    button {
+      width: 48%;
+      height: 60px;
+      font-size: 24px;
+      background: #222;
+      color: white;
+      border: none;
+      border-top: 2px solid #555;
+    }
+    button:active {
+      background: #444;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="pong" width="600" height="400"></canvas>
+  <div class="controls">
+    <button id="upBtn">⬆️</button>
+    <button id="downBtn">⬇️</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("pong");
+    const ctx = canvas.getContext("2d");
+
+    const paddleWidth = 10, paddleHeight = 80;
+
+    const player = {
+      x: 10,
+      y: canvas.height / 2 - paddleHeight / 2,
+      width: paddleWidth,
+      height: paddleHeight,
+      color: "#fff",
+      dy: 5
+    };
+
+    const ai = {
+      x: canvas.width - paddleWidth - 10,
+      y: canvas.height / 2 - paddleHeight / 2,
+      width: paddleWidth,
+      height: paddleHeight,
+      color: "#fff",
+      dy: 4
+    };
+
+    const ball = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      radius: 7,
+      speed: 4,
+      dx: 4,
+      dy: 4,
+      color: "#05edff"
+    };
+
+    let moveUp = false;
+    let moveDown = false;
+
+    function drawRect(x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, w, h);
+    }
+
+    function drawArc(x, y, r, color) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function collision(b, p) {
+      return b.x < p.x + p.width &&
+             b.x + b.radius > p.x &&
+             b.y < p.y + p.height &&
+             b.y + b.radius > p.y;
+    }
+
+    function resetBall() {
+      ball.x = canvas.width / 2;
+      ball.y = canvas.height / 2;
+      ball.dx *= -1;
+    }
+
+    function moveAI() {
+      ai.y += (ball.y - (ai.y + ai.height / 2)) * 0.07;
+    }
+
+    function movePlayer() {
+      if (moveUp && player.y > 0) {
+        player.y -= player.dy;
+      } else if (moveDown && player.y + player.height < canvas.height) {
+        player.y += player.dy;
+      }
+    }
+
+    function moveBall() {
+      ball.x += ball.dx;
+      ball.y += ball.dy;
+
+      if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+        ball.dy *= -1;
+      }
+
+      let paddle = (ball.x < canvas.width / 2) ? player : ai;
+
+      if (collision(ball, paddle)) {
+        ball.dx *= -1;
+      }
+
+      if (ball.x < 0 || ball.x > canvas.width) {
+        resetBall();
+      }
+    }
+
+    function draw() {
+      drawRect(0, 0, canvas.width, canvas.height, "#000");
+      drawRect(player.x, player.y, player.width, player.height, player.color);
+      drawRect(ai.x, ai.y, ai.width, ai.height, ai.color);
+      drawArc(ball.x, ball.y, ball.radius, ball.color);
+    }
+
+    function update() {
+      movePlayer();
+      moveAI();
+      moveBall();
+    }
+
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+
+    document.getElementById("upBtn").addEventListener("touchstart", () => moveUp = true);
+    document.getElementById("upBtn").addEventListener("touchend", () => moveUp = false);
+    document.getElementById("downBtn").addEventListener("touchstart", () => moveDown = true);
+    document.getElementById("downBtn").addEventListener("touchend", () => moveDown = false);
+  </script>
+</body>
+</html>
