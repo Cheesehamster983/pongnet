@@ -13,9 +13,9 @@ Controlls are the up butten to let the square go op and the down button to let i
 
 Just registerd a Subdomein for this project (not like there is something wrong with github.io)
 And bussy with a home menu and Making the pong for touch screen devices a bit better.
+Al are working now and i think the look good for nou i made a home screen and i touchscreen version (pong 2)
 
 
 And if your intrested also in the profider for the Subdomein i registerd (stil pending) nic.eu.org
-
 
 And please dont be mad about this but i use AI to code and things cause i realy not that good...
