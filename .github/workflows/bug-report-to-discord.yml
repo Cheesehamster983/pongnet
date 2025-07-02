@@ -1,0 +1,14 @@
+name: Report bugs to Discord
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+
+jobs:
+  send-discord:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send bug report to Discord
+      if: contains(github.event.issue.labels.*.name, 'bug')
+      run: |
+        curl -H "Content-Type: application/json" -X POST -d "{\"content\": \"🐞 New bug reported: ${{ github.event.issue.html_url }} - ${{ github.event.issue.title }}\"}" ${{ secrets.DISCORD_WEBHOOK_URL }}
