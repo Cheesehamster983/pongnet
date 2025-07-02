@@ -8,7 +8,9 @@ jobs:
   send-discord:
     runs-on: ubuntu-latest
     steps:
-    - name: Send bug report to Discord
-run: |
-  curl -H "Content-Type: application/json" -X POST -d "{\"content\": \"🐞 New issue: ${{ github.event.issue.html_url }} - ${{ github.event.issue.title }}\"}" ${{ secrets.DISCORD_WEBHOOK_URL }}
-
+      - name: Send bug report to Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{\"content\": \"🐞 New issue: ${{ github.event.issue.html_url }} - ${{ github.event.issue.title }}\"}" \
+               ${{ secrets.DISCORD_WEBHOOK_URL }}
