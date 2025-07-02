@@ -19,3 +19,5 @@ Al are working now and i think the look good for nou i made a home screen and i 
 And if your intrested also in the profider for the Subdomein i registerd (stil pending) nic.eu.org
 
 And please dont be mad about this but i use AI to code and things cause i realy not that good...
+
+https://discord.gg/NhRxV6S74j          (To join the discord community!)
