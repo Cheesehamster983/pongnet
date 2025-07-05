@@ -21,3 +21,5 @@ And if your intrested also in the profider for the Subdomein i registerd (stil p
 And please dont be mad about this but i use AI to code and things cause i realy not that good...
 
 https://discord.gg/NhRxV6S74j          (To join the discord community!)
+
+Atention this github project is archifed cause i didnt realy now why i made this... if you want to see all about this project see https://discord.gg/NhRxV6S74j
